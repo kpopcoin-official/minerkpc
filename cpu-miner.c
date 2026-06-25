@@ -637,7 +637,7 @@ static bool gbt_work_decode(const json_t *val, struct work *work)
 	work->data[18] = le32dec(&bits);
 	memset(work->data + 19, 0x00, 52);
 	work->data[20] = 0x80000000;
-	work->data[31] = 0x00000280;
+	work->data[31] = 0x000002A0;
 
 	if (unlikely(!jobj_binary(val, "target", target, sizeof(target)))) {
 		applog(LOG_ERR, "JSON invalid target");
@@ -744,20 +744,20 @@ static bool submit_upstream_work(CURL *curl, struct work *work)
 
 		for (i = 0; i < ARRAY_SIZE(work->data); i++)
 			be32enc(work->data + i, work->data[i]);
-		bin2hex(data_str, (unsigned char *)work->data, 80);
+		bin2hex(data_str, (unsigned char *)work->data, 84);
 		if (work->workid) {
 			char *params;
 			val = json_object();
 			json_object_set_new(val, "workid", json_string(work->workid));
 			params = json_dumps(val, 0);
 			json_decref(val);
-			req = malloc(128 + 2*80 + strlen(work->txs) + strlen(params));
+			req = malloc(128 + 2*84 + strlen(work->txs) + strlen(params));
 			sprintf(req,
 				"{\"method\": \"submitblock\", \"params\": [\"%s%s\", %s], \"id\":1}\r\n",
 				data_str, work->txs, params);
 			free(params);
 		} else {
-			req = malloc(128 + 2*80 + strlen(work->txs));
+			req = malloc(128 + 2*84 + strlen(work->txs));
 			sprintf(req,
 				"{\"method\": \"submitblock\", \"params\": [\"%s%s\"], \"id\":1}\r\n",
 				data_str, work->txs);
@@ -1190,12 +1190,26 @@ static void *miner_thread(void *userdata)
 				continue;
 			}
 		}
+		// if (memcmp(work.data, g_work.data, 76)) {
+		// 	work_free(&work);
+		// 	work_copy(&work, &g_work);
+		// 	work.data[19] = 0xffffffffU / opt_n_threads * thr_id;
+		// } else
+		// 	work.data[19]++;
 		if (memcmp(work.data, g_work.data, 76)) {
 			work_free(&work);
 			work_copy(&work, &g_work);
-			work.data[19] = 0xffffffffU / opt_n_threads * thr_id;
-		} else
-			work.data[19]++;
+			// 8바이트(64비트)의 최대값을 스레드 수로 나눔
+			uint64_t start_nonce = 0xffffffffffffffffULL / opt_n_threads * thr_id;
+			work.data[19] = (uint32_t)(start_nonce & 0xFFFFFFFF); // 하위 4바이트
+			work.data[20] = (uint32_t)(start_nonce >> 32);        // 상위 4바이트
+		} else {
+			// 8바이트 논스 1 증가 로직
+			uint64_t current_nonce = ((uint64_t)work.data[20] << 32) | work.data[19];
+			current_nonce++;
+			work.data[19] = (uint32_t)(current_nonce & 0xFFFFFFFF);
+			work.data[20] = (uint32_t)(current_nonce >> 32);
+		}
 		pthread_mutex_unlock(&g_work_lock);
 		work_restart[thr_id].restart = 0;
 		
@@ -1216,11 +1230,12 @@ static void *miner_thread(void *userdata)
 				break;
 			}
 		}
-		if (work.data[19] + max64 > end_nonce)
-			max_nonce = end_nonce;
-		else
-			max_nonce = work.data[19] + max64;
-		
+		// if (work.data[19] + max64 > end_nonce)
+		// 	max_nonce = end_nonce;
+		// else
+		// 	max_nonce = work.data[19] + max64;
+		// 8바이트 환경이므로 절대값이 아닌 '이번 루프의 반복 횟수'만 max_nonce에 전달합니다.
+		max_nonce = (uint32_t)max64;
 		hashes_done = 0;
 		gettimeofday(&tv_start, NULL);
 
