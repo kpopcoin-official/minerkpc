@@ -7,11 +7,11 @@
 
 FROM            ubuntu:16.04
 MAINTAINER      Guillaume J. Charmes <guillaume@charmes.net>
-
+                KPOP Coin Developers
 RUN             apt-get update -qq && \
                 apt-get install -qqy automake libcurl4-openssl-dev git make gcc
 
-RUN             git clone https://github.com/내계정/minerkpc
+RUN             git clone https://github.com/kpopcoin-official/minerkpc
 
 RUN             cd minerkpc && \
                 ./autogen.sh && \
