@@ -1,7 +1,12 @@
 /*
  * Copyright 2011 ArtForz
  * Copyright 2011-2013 pooler
- *
+  
+ * Modified for KPOPcoin (2026)
+ * This version has been adapted for KPOPcoin and is intended to operate
+ * specifically on the KPOPcoin network.
+ * It may not function correctly, and is not guaranteed to be compatible,
+ * with any other cryptocurrency or fork.
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
  * Software Foundation; either version 2 of the License, or (at your option)

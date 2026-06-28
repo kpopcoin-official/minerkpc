@@ -11,12 +11,12 @@ MAINTAINER      Guillaume J. Charmes <guillaume@charmes.net>
 RUN             apt-get update -qq && \
                 apt-get install -qqy automake libcurl4-openssl-dev git make gcc
 
-RUN             git clone https://github.com/pooler/cpuminer
+RUN             git clone https://github.com/내계정/minerkpc
 
-RUN             cd cpuminer && \
+RUN             cd minerkpc && \
                 ./autogen.sh && \
                 ./configure CFLAGS="-O3" && \
                 make
 
-WORKDIR         /cpuminer
+WORKDIR         /minerkpc
 ENTRYPOINT      ["./minerd"]

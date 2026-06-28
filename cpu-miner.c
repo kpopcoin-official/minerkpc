@@ -1,6 +1,8 @@
 /*
  * Copyright 2010 Jeff Garzik
  * Copyright 2012-2017 pooler
+ * Copyright 2026 The KPOP Coin Developers
+ * Modified for exclusive use with KPOP Coin
  *
  * This program is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
