@@ -4,16 +4,25 @@ fork of Jeff Garzik's reference cpuminer.
 
 License: GPLv2.  See COPYING for details.
 
-Downloads:
-    https://...................
-
-Git tree:
-    https://github.com/kpopcoin-official/minerkpc/
-
 Based on:
     https://github.com/pooler/cpuminer  
       (version cpuminer 2.5.1)
- 
+
+### How to run
+1. Download the file above.
+2. Extract: `tar -xvf minerkpc-v0.9.0-linux-x64.tar.gz`
+3. Run the miner: `./minerd -a sha256d -o <POOL> -u <USER> -p <PASS> --coinbase-addr=<WALLET>` 
+./minerd -a sha256d -o http://127.0.0.1:8717/wallet/test_wallet -u admin -p 1234 --coinbase-addr=kp1ql6c3yx4xcackgey763agqnll2x8fj043n48smf
+
+Breakdown of Parameters:
+    -a sha256d: Specifies the mining algorithm (do not change this).
+    -o <POOL_URL>: The address of the mining pool you are connecting to.
+        Example: [http://127.0.0.1:8717/wallet/test_wallet](http://127.0.0.1:8717/wallet/test_wallet)
+    -u <USERNAME>: Your mining pool username or ID.
+    -p <PASSWORD>: Your mining pool password.
+    --coinbase-addr=<WALLET_ADDRESS>: The destination address where your mined coins will be sent.
+        Example: kp1ql6c3yx4xcackgey763agqnll2x8fj043n48smf
+
 Dependencies:
 	libcurl			http://curl.haxx.se/libcurl/
 	jansson			http://www.digip.org/jansson/
