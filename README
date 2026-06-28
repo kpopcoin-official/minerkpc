@@ -4,6 +4,8 @@ fork of Jeff Garzik's reference cpuminer.
 
 License: GPLv2.  See COPYING for details.
 
+Downloads:
+    https://github.com/user-attachments/files/29432965/minerkpc-v0.9.0-linux-x64.tar.gz
 Based on:
     https://github.com/pooler/cpuminer  
       (version cpuminer 2.5.1)
