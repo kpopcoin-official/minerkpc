@@ -1,18 +1,40 @@
 Modified for exclusive use with KPOP Coin 
-// This is a multi-threaded CPU miner for Litecoin and Bitcoin,
 fork of Jeff Garzik's reference cpuminer.
 
 License: GPLv2.  See COPYING for details.
 
 Downloads:
-    https://너의-다운로드-주소
-
+    https://github.com/kpopcoin-official/minerkpc
 Git tree:
-    https://너의-github-주소
-
+    https://github.com/kpopcoin-official/minerkpc
 Based on:
     https://github.com/pooler/cpuminer  
       (version cpuminer 2.5.1)
+
+### How to run
+1. Download the file above.
+    Note: Antivirus programs may falsely flag this mining software as a virus. 
+    This is a common false positive. Please add it to your antivirus exclusion list.
+2. Extract the file.
+   * Note for Windows users: You must install MSYS2 (https://www.msys2.org/) and run the miner inside the MSYS2 terminal.
+3. Run the miner:
+   [Linux]
+   ./minerd -a sha256d -o <POOL> -u <USER> -p <PASS> --coinbase-addr=<WALLET>
+   
+   [Windows (Open MSYS2 terminal and run)]
+   ./minerd.exe -a sha256d -o <POOL> -u <USER> -p <PASS> --coinbase-addr=<WALLET>
+
+Example:
+./minerd -a sha256d -o http://127.0.0.1:8717/wallet/my_wallet -u admin -p 1234 --coinbase-addr=kp1ql6c3yx4xcackgey763agqnll2x8fj043n48smf
+
+Breakdown of Parameters:
+    -a sha256d: Specifies the mining algorithm (do not change this).
+    -o <POOL_URL>: The address of the mining pool you are connecting to.
+        Example: [http://127.0.0.1:8717/wallet/my_wallet](http://127.0.0.1:8717/wallet/my_wallet)
+    -u <USERNAME>: Your mining pool username or ID.
+    -p <PASSWORD>: Your mining pool password.
+    --coinbase-addr=<WALLET_ADDRESS>: The destination address where your mined coins will be sent.
+        Example: kp1ql6c3yx4xcackgey763agqnll2x8fj043n48smf
  
 Dependencies:
 	libcurl			http://curl.haxx.se/libcurl/
@@ -76,4 +98,4 @@ and all_proxy environment variables.
 
 Also many issues and FAQs are covered in the forum thread
 dedicated to this program,
-	https://bitcointalk.org/index.php?topic=55038.0
+	https://github.com/kpopcoin-official/minerkpc/issues
